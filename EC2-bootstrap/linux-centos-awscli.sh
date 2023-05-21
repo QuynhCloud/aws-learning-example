@@ -21,14 +21,13 @@ if [[ "$status_code" -eq 200 ]]
 then
     export privateIp=`curl $METADATA/latest/meta-data/local-ipv4`
     export publicIP=`curl $METADATA/latest/meta-data/public-ipv4`
-    export AWS_DEFAULT_REGION="Your AWS Region"
-                                /usr/bin/aws ec2 create-tags --resources $instance_id --tags'Key="abcde",Value=12345'`
+    export instance_id=`curl $METADATA/latest/meta-data/instance-id`
+    export instance_id=`curl $METADATA/latest/meta-data/tags/instance`    
 else
     TOKEN=`curl -X PUT "$METADATA/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"`
     export privateIp=`curl -H "X-aws-ec2-metadata-token: $TOKEN" -v $METADATA/latest/meta-data/local-ipv4`
     export publicIP=`curl -H "X-aws-ec2-metadata-token: $TOKEN" -v $METADATA/latest/meta-data/public-ipv4`
-    export AWS_DEFAULT_REGION="Your AWS Region"
-                                /usr/bin/aws ec2 create-tags --resources $instance_id --tags'Key="abcde",Value=12345'`
+    export instance_id=`curl -H "X-aws-ec2-metadata-token: $TOKEN" -v $METADATA/latest/meta-data/tags/instance`
 fi   
 echo "<br>Private IP: " >> index.html
 echo $privateIp >> index.html

@@ -12,7 +12,7 @@ cd /var/www/html
 echo "<html>" > index.html
 METADATA='http://169.254.169.254'
 
-echo "<h1>Welcome to EC2-Instance name : </h1>" >> index.html
+echo "<h1>Welcome to EC2</h1>" >> index.html
 INSTANCE_ID=$(ec2metadata --instance-id)
 AWS_INSTANCE_ID=`curl -s $METADATA/latest/meta-data/instance-id`
 EC2_NAME=$(aws ec2 describe-tags --region $REGION --filters "Name=resource-id,Values=$AWS_INSTANCE_ID" "Name=key,Values=Name" --output text | cut -f5)

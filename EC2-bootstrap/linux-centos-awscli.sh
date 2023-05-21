@@ -13,10 +13,10 @@ echo "<html>" > index.html
 METADATA='http://169.254.169.254'
 
 echo "<h1>Welcome to EC2</h1>" >> index.html
-INSTANCE_ID=$(ec2metadata --instance-id)
-AWS_INSTANCE_ID=`curl -s $METADATA/latest/meta-data/instance-id`
-EC2_NAME=$(aws ec2 describe-tags --region $REGION --filters "Name=resource-id,Values=$AWS_INSTANCE_ID" "Name=key,Values=Name" --output text | cut -f5)
-export privateIp=EC2_NAME
+
+instance_id=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+export AWS_DEFAULT_REGION="Your AWS Region"
+/usr/bin/aws ec2 create-tags --resources $instance_id --tags'Key="abcde",Value=12345'`
 
 echo "<h4>You are running instance from this IP (This is for testing purpose only, you should not public this to user):</h4>"
 status_code=$(curl -s -o /dev/null -w "%{http_code}" $METADATA/latest/meta-data/)
